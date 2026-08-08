@@ -39,6 +39,9 @@ func makeRequest(ctx context.Context, msConfig config.Config_MediaServer, url st
 
 func AddEJAuthHeaders(msConfig config.Config_MediaServer, headers map[string]string) map[string]string {
 	headers["X-Emby-Token"] = msConfig.ApiToken
+	if strings.EqualFold(msConfig.Type, "Jellyfin") {
+		headers["Authorization"] = fmt.Sprintf("MediaBrowser Token=\"%s\"", msConfig.ApiToken)
+	}
 	headers["Accept"] = "application/json"
 	headers["X-Emby-Client"] = "aura"
 	headers["X-Emby-Device"] = "aura"
